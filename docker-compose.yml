@@ -1,0 +1,15 @@
+version: '3.8'  # Phiên bản Docker Compose
+
+services:
+  mysql:
+    image: bitnami/mysql:8.0  # Sử dụng image bitnami/mysql:8.0 như trong lệnh của bạn
+    container_name: mysql  # Đặt tên container là "mysql"
+    privileged: true  # Chạy container với quyền privileged
+    environment:  # Thiết lập các biến môi trường
+      - MYSQL_ROOT_PASSWORD=ead86886ba57479778a76e
+      - MYSQL_USER=demo
+      - MYSQL_PASSWORD=19e5a718a54a9fe0559dfbce6908
+      - MYSQL_DATABASE=demo
+    ports:  # Ánh xạ cổng
+      - "3309:3306"  # Ánh xạ cổng 3309 trên host với cổng 3306 trong container
+    restart: unless-stopped  # Tự động khởi động lại container trừ khi bị dừng thủ công
