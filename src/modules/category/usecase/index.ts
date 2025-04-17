@@ -65,12 +65,12 @@ export class CategoryUseCase implements ICategoryUseCase {
     return await this.repository.update(id, parsedData);
   }
 
-  async deleteCategory(id: string, isHardDelete: boolean): Promise<boolean> {
+  async deleteCategory(id: string): Promise<boolean> {
     const category = await this.repository.get(id);
     if (!category || category.status === ModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
-    return await this.repository.delete(id, isHardDelete);
+    return await this.repository.delete(id, false);
   }
 
   async getDetailCategory(id: string): Promise<Category> {

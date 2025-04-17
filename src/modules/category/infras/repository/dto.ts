@@ -4,7 +4,7 @@ export class CategoryPersistence extends Model {}
 
 export const modelName = 'Category';
 
-export const initModel = (sequelize: Sequelize) => {
+export const init = (sequelize: Sequelize) => {
   CategoryPersistence.init(
     {
       id: {

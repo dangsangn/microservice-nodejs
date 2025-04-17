@@ -4,8 +4,9 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+        "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node -r tsconfig-paths/register' src/index.ts",
         "build": "tsc",
+        "start": "node -r tsconfig-paths/register dist/index.js",
         "lint": "eslint 'src/**/*.ts'"
     },
     "keywords": [],
@@ -23,6 +24,7 @@
         "npm": "^10.9.2",
         "prettier": "^3.5.3",
         "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
         "typescript": "^5.8.3"
     },
     "dependencies": {

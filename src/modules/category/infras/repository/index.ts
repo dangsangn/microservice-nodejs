@@ -1,10 +1,9 @@
-import { IRepository } from '@/share/interface';
-import { Op, Sequelize } from 'sequelize';
-import { Category } from '../../model';
-import { ICategoryRepository } from '../../interface';
-import { PagingDTO } from '@/share/model/paging';
-import { CategoryConditionDTO, CategoryCreateDTO, CategoryUpdateDTO } from '../../model/dto';
 import { ModelStatus } from '@/share/model/base-model';
+import { PagingDTO } from '@/share/model/paging';
+import { Op, Sequelize } from 'sequelize';
+import { ICategoryRepository } from '../../interface';
+import { Category } from '../../model';
+import { CategoryConditionDTO, CategoryCreateDTO, CategoryUpdateDTO } from '../../model/dto';
 
 export class MySQLCategoryRepository implements ICategoryRepository {
   constructor(

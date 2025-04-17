@@ -18,7 +18,7 @@ export interface ICategoryRepository extends IQueryRepository, ICommandRepositor
 export interface ICategoryUseCase {
   createCategory(category: CategoryCreateDTO): Promise<string>;
   updateCategory(id: string, category: CategoryUpdateDTO): Promise<boolean>;
-  deleteCategory(id: string, isHardDelete: boolean): Promise<boolean>;
+  deleteCategory(id: string): Promise<boolean>;
   getDetailCategory(id: string): Promise<Category>;
   listCategory(condition: CategoryConditionDTO, paging: PagingDTO): Promise<Category[]>;
 }
