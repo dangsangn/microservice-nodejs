@@ -58,18 +58,16 @@ export class CategoryHttpService {
   }
 
   private buildTree(categories: Category[]) {
-    let categoryTree: Category[] = [];
+    const categoryTree: Category[] = [];
     const mapChildren = new Map<string, Category[]>();
     for (let i = 0; i < categories.length; i++) {
       const category: Category = categories[i];
-      if (!mapChildren.get(category.id)) {
-        mapChildren.set(category.id, []);
-      }
 
+      category.children = mapChildren.get(category.id) || [];
       if (!category.parentId) {
         categoryTree.push(category);
       } else {
-        const children = mapChildren.get(category.parentId as string) || [];
+        const children = mapChildren.get(category.parentId as string);
         children ? children.push(category) : mapChildren.set(category.parentId as string, [category]);
       }
     }

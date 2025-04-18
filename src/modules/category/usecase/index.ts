@@ -34,14 +34,12 @@ export class CategoryUseCase implements ICategoryUseCase {
     const newId = v7();
     const category: Category = {
       id: newId,
-      name: parsedData.name,
       position: 0,
-      image: parsedData.image,
-      description: parsedData.description,
       status: ModelStatus.ACTIVE,
       createdAt: new Date(),
       updatedAt: new Date(),
       children: [],
+      ...parsedData,
     };
     await this.repository.insert(category);
     return newId;

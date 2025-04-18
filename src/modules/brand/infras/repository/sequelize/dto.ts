@@ -1,11 +1,11 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
-export class CategoryPersistence extends Model {}
+export const modelName = 'Brand';
 
-export const modelName = 'Category';
+export class BrandPersistence extends Model {}
 
 export const init = (sequelize: Sequelize) => {
-  CategoryPersistence.init(
+  BrandPersistence.init(
     {
       id: {
         type: DataTypes.STRING,
@@ -19,18 +19,18 @@ export const init = (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      parentId: {
-        type: DataTypes.STRING,
-        field: 'parent_id',
-        allowNull: true,
-      },
       image: {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      tagLine: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'tag_line',
+      },
       status: {
         type: DataTypes.ENUM('active', 'inactive', 'deleted'),
-        allowNull: false,
+        allowNull: true,
         defaultValue: 'active',
       },
     },
@@ -40,7 +40,7 @@ export const init = (sequelize: Sequelize) => {
       timestamps: true,
       createdAt: 'created_at',
       updatedAt: 'updated_at',
-      tableName: 'categories',
+      tableName: 'brands',
     },
   );
 };
