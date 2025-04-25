@@ -13,11 +13,11 @@ export const setupCategoryHexagonal = (sequelize: Sequelize) => {
   const httpService = new CategoryHttpService(useCase);
 
   const router = Router();
-  router.post('/categories', httpService.createCategory.bind(httpService));
-  router.patch('/categories/:id', httpService.updateCategory.bind(httpService));
-  router.delete('/categories/:id', httpService.deleteCategory.bind(httpService));
-  router.get('/categories/:id', httpService.getDetailCategory.bind(httpService));
-  router.get('/categories', httpService.listCategory.bind(httpService));
+  router.post('', httpService.createCategory.bind(httpService));
+  router.patch('/:id', httpService.updateCategory.bind(httpService));
+  router.delete('/:id', httpService.deleteCategory.bind(httpService));
+  router.get('/:id', httpService.getDetailCategory.bind(httpService));
+  router.get('', httpService.listCategory.bind(httpService));
 
   return router;
 };

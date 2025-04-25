@@ -3,10 +3,45 @@ import { IRepository } from '@/share/interface';
 import { PagingDTO } from '@/share/model/paging';
 import { ModelStatus } from '@/share/model/base-model';
 
-export abstract class BaseRepositorySequelize<Entity, Condition, UpdateDTO> implements IRepository<Entity, Condition, UpdateDTO> {
-  constructor(private readonly sequelize: Sequelize, private readonly modelName: string) {}
+export abstract class BaseRepositorySequelize<Entity, Condition, UpdateDTO>
+  implements IRepository<Entity, Condition, UpdateDTO>
+{
+  constructor(
+    readonly queryRepository: BaseRepositoryQuerySequelize<Entity, Condition>,
+    readonly commandRepository: BaseRepositoryCommandSequelize<Entity, UpdateDTO>,
+  ) {}
 
-  async get(id:string):Promise<Entity | null> {
+  get(id: string): Promise<Entity | null> {
+    return this.queryRepository.get(id);
+  }
+
+  findByCondition(condition: Condition): Promise<Entity | null> {
+    return this.queryRepository.findByCondition(condition);
+  }
+
+  list(condition: Condition, paging: PagingDTO): Promise<Entity[]> {
+    return this.queryRepository.list(condition, paging);
+  }
+
+  insert(entity: Entity): Promise<boolean> {
+    return this.commandRepository.insert(entity);
+  }
+
+  update(id: string, updateDTO: UpdateDTO): Promise<boolean> {
+    return this.commandRepository.update(id, updateDTO);
+  }
+
+  delete(id: string, isHardDelete: boolean = false): Promise<boolean> {
+    return this.commandRepository.delete(id, isHardDelete);
+  }
+}
+
+export abstract class BaseRepositoryQuerySequelize<Entity, Condition> {
+  constructor(
+    private readonly sequelize: Sequelize,
+    private readonly modelName: string,
+  ) {}
+  async get(id: string): Promise<Entity | null> {
     const model = this.sequelize.models[this.modelName];
     if (!model) {
       throw new Error(`Model ${this.modelName} not found`);
@@ -44,8 +79,8 @@ export abstract class BaseRepositorySequelize<Entity, Condition, UpdateDTO> impl
     }
 
     const { limit, page } = paging;
-    
-    const condSQL  = {...condition, status: {[Op.ne]: ModelStatus.DELETED}}
+
+    const condSQL = { ...condition, status: { [Op.ne]: ModelStatus.DELETED } };
 
     const total = await this.sequelize.models[this.modelName].count({ where: condSQL });
 
@@ -65,11 +100,17 @@ export abstract class BaseRepositorySequelize<Entity, Condition, UpdateDTO> impl
 
     return data;
   }
+}
 
-  async insert(entity: Entity): Promise<boolean> {
+export abstract class BaseRepositoryCommandSequelize<CreateDTO, UpdateDTO> {
+  constructor(
+    private readonly sequelize: Sequelize,
+    private readonly modelName: string,
+  ) {}
+  async insert(entity: CreateDTO): Promise<boolean> {
     const model = this.sequelize.models[this.modelName];
     if (!model) {
-      throw new Error(`Model ${this.modelName} not found`); 
+      throw new Error(`Model ${this.modelName} not found`);
     }
 
     await this.sequelize.models[this.modelName].create(entity as any);
@@ -82,15 +123,19 @@ export abstract class BaseRepositorySequelize<Entity, Condition, UpdateDTO> impl
       throw new Error(`Model ${this.modelName} not found`);
     }
     await this.sequelize.models[this.modelName].update(updateDTO as any, { where: { id } });
-    return true;    
+    return true;
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: string, isHardDelete: boolean = false): Promise<boolean> {
     const model = this.sequelize.models[this.modelName];
     if (!model) {
       throw new Error(`Model ${this.modelName} not found`);
     }
-    await this.sequelize.models[this.modelName].update({ status: ModelStatus.DELETED }, { where: { id } });
+    if (isHardDelete) {
+      await this.sequelize.models[this.modelName].destroy({ where: { id } });
+    } else {
+      await this.sequelize.models[this.modelName].update({ status: ModelStatus.DELETED }, { where: { id } });
+    }
     return true;
   }
 }

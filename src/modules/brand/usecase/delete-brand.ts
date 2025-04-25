@@ -7,18 +7,14 @@ export class DeleteBrandCmdHandler implements ICommandHandler<DeleteCommand, boo
   constructor(private readonly brandRepository: IBrandRepository) {}
 
   async execute(command: DeleteCommand): Promise<boolean> {
-    const { id, isHardDelete } = command;
+    const { id, isHardDelete = false } = command;
 
     const brand = await this.brandRepository.findByCondition({ id });
     if (!brand) {
       throw ErrDataNotFound;
     }
 
-    if (isHardDelete) {
-      await this.brandRepository.delete(id);
-    } else {
-      await this.brandRepository.update(id, { status: ModelStatus.DELETED });
-    }
+    await this.brandRepository.delete(id, isHardDelete);
 
     return true;
   }

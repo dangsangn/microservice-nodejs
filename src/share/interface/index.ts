@@ -13,7 +13,7 @@ export interface IQueryRepository<Entity, Condition> {
 export interface ICommandRepository<Entity, UpdateDTO> {
   insert(entity: Entity): Promise<boolean>;
   update(id: string, updateDTO: UpdateDTO): Promise<boolean>;
-  delete(id: string): Promise<boolean>;
+  delete(id: string, isHardDelete: boolean): Promise<boolean>;
 }
 
 export interface ICommandHandler<Command, Result> {
@@ -22,4 +22,12 @@ export interface ICommandHandler<Command, Result> {
 
 export interface IQueryHandler<Query, Result> {
   query(query: Query): Promise<Result>;
+}
+
+export interface IUseCase<CreateDTO, UpdateDTO, Condition, Entity> {
+  create(dto: CreateDTO): Promise<string>;
+  update(id: string, dto: UpdateDTO): Promise<boolean>;
+  delete(id: string): Promise<boolean>;
+  get(id: string): Promise<Entity>;
+  list(condition: Condition, paging: PagingDTO): Promise<Entity[]>;
 }

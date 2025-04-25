@@ -28,11 +28,11 @@ export const setupBrandHexagonal = (sequelize: Sequelize) => {
   );
 
   const router = Router();
-  router.post('/brands', httpService.createBrand.bind(httpService));
-  router.patch('/brands/:id', httpService.updateBrand.bind(httpService));
-  router.delete('/brands/:id', httpService.deleteBrand.bind(httpService));
-  router.get('/brands/:id', httpService.getDetailBrand.bind(httpService));
-  router.get('/brands', httpService.listBrand.bind(httpService));
+  router.post('', httpService.createBrand.bind(httpService));
+  router.patch('/:id', httpService.updateBrand.bind(httpService));
+  router.delete('/:id', httpService.deleteBrand.bind(httpService));
+  router.get('/:id', httpService.getDetailBrand.bind(httpService));
+  router.get('', httpService.listBrand.bind(httpService));
 
   return router;
 };
