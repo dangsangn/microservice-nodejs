@@ -31,3 +31,31 @@ export interface IUseCase<CreateDTO, UpdateDTO, Condition, Entity> {
   get(id: string): Promise<Entity>;
   list(condition: Condition, paging: PagingDTO): Promise<Entity[]>;
 }
+
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user',
+}
+
+export interface TokenPayload {
+  sub: string;
+  role: UserRole;
+}
+
+export interface Requester extends TokenPayload {}
+
+export interface ITokenProvider {
+  generateToken(payload: TokenPayload): Promise<string>;
+  verifyToken(token: string): Promise<TokenPayload | null>;
+}
+
+// Authorization
+export type TokenIntrospectResult = {
+  payload: TokenPayload | null;
+  isOk: boolean;
+  error?: Error;
+};
+
+export interface ITokenIntrospect {
+  introspect(token: string): Promise<TokenIntrospectResult>;
+}

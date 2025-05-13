@@ -15,6 +15,7 @@
     "description": "",
     "devDependencies": {
         "@types/express": "^5.0.1",
+        "@types/morgan": "^1.9.9",
         "@types/node": "^22.14.1",
         "dotenv": "^16.5.0",
         "eslint": "^9.24.0",
@@ -29,6 +30,7 @@
     },
     "dependencies": {
         "axios": "^1.9.0",
+        "morgan": "^1.10.0",
         "mysql2": "^3.14.0",
         "sequelize": "^6.37.7",
         "uuid": "^11.1.0",
