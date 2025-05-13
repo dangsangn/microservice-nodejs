@@ -40,14 +40,14 @@ export type Product = z.infer<typeof productSchema>;
 
 export const BrandProductSchema = z.object({
   id: z.string().uuid(),
-  name: z.string().min(2, { message: 'Name must be at least 2 characters long' }),
+  name: z.string().min(2, NameMustBeAtLeast2CharactersLongError),
 });
 
 export type BrandProduct = z.infer<typeof BrandProductSchema>;
 
 export const CategoryProductSchema = z.object({
   id: z.string().uuid(),
-  name: z.string().min(2, { message: 'Name must be at least 2 characters long' }),
+  name: z.string().min(2, NameMustBeAtLeast2CharactersLongError),
 });
 
 export type CategoryProduct = z.infer<typeof CategoryProductSchema>;

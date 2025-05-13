@@ -1,0 +1,11 @@
+export const ErrFirstNameAtLeast2Chars = new Error('First name at least 2 chars');
+export const ErrLastNameAtLeast2Chars = new Error('Last name at least 2 chars');
+export const ErrEmailInvalid = new Error('Email invalid');
+export const ErrPasswordAtLeast6Chars = new Error('Password at least 6 chars');
+export const ErrBirthdayInvalid = new Error('Birthday invalid');
+export const ErrGenderInvalid = new Error('Gender invalid');
+export const ErrRoleInvalid = new Error('Role invalid');
+export const ErrEmailAlreadyExists = new Error('Email already exists');
+export const ErrInvalidPassword = new Error('Invalid password');
+export const ErrInvalidToken = new Error('Invalid token');
+export const ErrUserInvalid = new Error('User invalid');

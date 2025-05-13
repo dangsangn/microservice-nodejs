@@ -38,8 +38,8 @@ export abstract class BaseRepositorySequelize<Entity, Condition, UpdateDTO>
 
 export abstract class BaseRepositoryQuerySequelize<Entity, Condition> {
   constructor(
-    private readonly sequelize: Sequelize,
-    private readonly modelName: string,
+    readonly sequelize: Sequelize,
+    readonly modelName: string,
   ) {}
   async get(id: string): Promise<Entity | null> {
     const model = this.sequelize.models[this.modelName];
@@ -104,8 +104,8 @@ export abstract class BaseRepositoryQuerySequelize<Entity, Condition> {
 
 export abstract class BaseRepositoryCommandSequelize<CreateDTO, UpdateDTO> {
   constructor(
-    private readonly sequelize: Sequelize,
-    private readonly modelName: string,
+    readonly sequelize: Sequelize,
+    readonly modelName: string,
   ) {}
   async insert(entity: CreateDTO): Promise<boolean> {
     const model = this.sequelize.models[this.modelName];
