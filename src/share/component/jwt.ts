@@ -1,5 +1,5 @@
 import { ITokenProvider, TokenPayload } from '../interface';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { config } from './config';
 
 export class JWTTokenService implements ITokenProvider {
@@ -12,7 +12,7 @@ export class JWTTokenService implements ITokenProvider {
   }
 
   async generateToken(payload: TokenPayload): Promise<string> {
-    return jwt.sign(payload, this.secretKey, { expiresIn: this.expiresIn });
+    return jwt.sign(payload, this.secretKey, { expiresIn: this.expiresIn } as SignOptions);
   }
 
   async verifyToken(token: string): Promise<TokenPayload | null> {

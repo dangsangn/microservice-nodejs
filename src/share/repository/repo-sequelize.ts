@@ -23,6 +23,10 @@ export abstract class BaseRepositorySequelize<Entity, Condition, UpdateDTO>
     return this.queryRepository.list(condition, paging);
   }
 
+  listByIds(ids: string[]): Promise<Entity[]> {
+    return this.queryRepository.listByIds(ids);
+  }
+
   insert(entity: Entity): Promise<boolean> {
     return this.commandRepository.insert(entity);
   }
@@ -99,6 +103,19 @@ export abstract class BaseRepositoryQuerySequelize<Entity, Condition> {
     });
 
     return data;
+  }
+
+  async listByIds(ids: string[]): Promise<Entity[]> {
+    const model = this.sequelize.models[this.modelName];
+    if (!model) {
+      throw new Error(`Model ${this.modelName} not found`);
+    }
+    const data = await model.findAll({ where: { id: { [Op.in]: ids } } });
+    return data.map((row) => {
+      const persistenceData = row.get({ plain: true });
+      const { create_at, update_at, ...entityData } = persistenceData;
+      return { ...entityData, createdAt: create_at, updatedAt: update_at } as Entity;
+    });
   }
 }
 

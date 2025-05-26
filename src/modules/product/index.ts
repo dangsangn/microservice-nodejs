@@ -20,14 +20,22 @@ export const setupProductHexagonal = (sequelize: Sequelize) => {
   const productBrandProxyRepository = new ProductBrandProxyRepository(productBrandRepository);
   const productCategoryRepository = new RPCProductCategoryRepository(config.rpc.productCategory);
 
-  const httpService = new ProductHttpService(productUseCase, productBrandProxyRepository, productCategoryRepository);
+  const httpService = new ProductHttpService(
+    productUseCase,
+    productBrandProxyRepository,
+    productCategoryRepository,
+    repository,
+  );
 
   const router = Router();
-  router.post('', httpService.createApi.bind(httpService));
-  router.patch('/:id', httpService.updateApi.bind(httpService));
-  router.delete('/:id', httpService.deleteApi.bind(httpService));
-  router.get('/:id', httpService.getDetailApi.bind(httpService));
-  router.get('', httpService.listApi.bind(httpService));
+  router.post('/products', httpService.createApi.bind(httpService));
+  router.patch('/products/:id', httpService.updateApi.bind(httpService));
+  router.delete('/products/:id', httpService.deleteApi.bind(httpService));
+  router.get('/products/:id', httpService.getDetailApi.bind(httpService));
+  router.get('/products', httpService.listApi.bind(httpService));
+
+  //rpc
+  router.post('/rpc/products/by-ids', httpService.getProductByIdsApi.bind(httpService));
 
   return router;
 };

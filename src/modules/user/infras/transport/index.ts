@@ -47,6 +47,7 @@ export class UserHTTPService extends BaseHttpService<User, UserRegisterDTO, User
   }
 
   async introspectAPI(req: Request, res: Response) {
+    console.log('1111');
     try {
       const { token } = req.body;
       const result = await this.useCase.verifyToken(token);

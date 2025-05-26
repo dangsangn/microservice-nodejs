@@ -12,6 +12,7 @@ import { authMiddleware } from './share/middleware/auth';
 import { allowRoles } from './share/middleware/check-role';
 import { Requester, UserRole } from './share/interface';
 import { setupMiddlewares } from './share/middleware';
+import { setupCartHexagon } from './modules/cart';
 
 config();
 
@@ -24,7 +25,7 @@ config();
   app.use(morgan('dev'));
 
   const introspect = new TokenIntrospectRPCClient(
-    process.env.VERIFY_TOKEN_URL || 'http://localhost:3000/v1/rpc/introspect',
+    process.env.VERIFY_TOKEN_URL || 'http://localhost:3333/api/v1/rpc/introspect',
   );
   const authMdl = authMiddleware(introspect);
   const sctx = { mdlFactory: setupMiddlewares(introspect) };
@@ -35,7 +36,6 @@ config();
   });
 
   const myMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    console.log('Url: ', req.url);
     next();
   };
 
@@ -47,8 +47,9 @@ config();
 
   app.use('/api/v1/categories', setupCategoryHexagonal(sequelize));
   app.use('/api/v1/brands', setupBrandHexagonal(sequelize));
-  app.use('/api/v1/products', setupProductHexagonal(sequelize));
-  app.use('/api/v1/users', setupUserHexagon(sequelize, sctx));
+  app.use('/api/v1', setupProductHexagonal(sequelize));
+  app.use('/api/v1', setupUserHexagon(sequelize, sctx));
+  app.use('/api/v1', setupCartHexagon(sequelize, sctx));
 
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     responseErr(err, res);

@@ -42,11 +42,16 @@ export const UpdateProductSchema = z.object({
 export type UpdateProductDto = z.infer<typeof UpdateProductSchema>;
 
 export const ConditionProductSchema = z.object({
-  fromPrice: z.number().positive(PriceMustBeGreaterThan0Error),
-  toPrice: z.number().positive(PriceMustBeGreaterThan0Error),
+  fromPrice: z.number().positive(PriceMustBeGreaterThan0Error).optional(),
+  toPrice: z.number().positive(PriceMustBeGreaterThan0Error).optional(),
   brandId: z.string().uuid(BrandIdMustBeValidUUIDError).optional(),
   categoryId: z.string().uuid(CategoryIdMustBeValidUUIDError).optional(),
   gender: z.nativeEnum(ProductGender).optional(),
+  id: z
+    .object({
+      in: z.array(z.string().uuid()),
+    })
+    .optional(),
 });
 
 export type ConditionProductDto = z.infer<typeof ConditionProductSchema>;
